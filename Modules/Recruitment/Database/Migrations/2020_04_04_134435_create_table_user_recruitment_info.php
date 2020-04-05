@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Recruitment\Enums\UserWorkEnum;
 
 class CreateTableUserRecruitmentInfo extends Migration
 {
@@ -28,9 +29,9 @@ class CreateTableUserRecruitmentInfo extends Migration
 
             //工作期望 工作类型（长短期/周末/实习）、工作时间（工作日/周末/节假日） *去除可上班时间
 
-            //[]数组形式 可用laravel 7 自定义 Eloquent 转化解析CastsAttributes
-            $table->string('hope_work_type')->default('[]')->comment('期望工作类型');
-            $table->string('hope_work_time')->default('[]')->comment('期望工作时间');
+            //[]数组形式 逗号分隔 可用laravel 7 自定义 Eloquent 转化解析CastsAttributes
+            $table->string('hope_work_type')->default(UserWorkEnum::HOPE_WORK_TYPE_NO_LIMIT)->comment('期望工作类型');
+            $table->string('hope_work_time')->default(UserWorkEnum::HOPE_WORK_TIME_NO_LIMIT)->comment('期望工作时间');
 
             $table->unsignedTinyInteger('can_full_time')->comment('可否全职');
 
