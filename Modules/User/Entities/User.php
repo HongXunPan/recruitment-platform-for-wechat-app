@@ -39,4 +39,34 @@ class User extends Authenticatable
     ];
 
     protected $table = 'users';
+
+    public function identity()
+    {
+        return $this->hasOne(Identity::class, 'user_id');
+    }
+
+    public function recruitmentInfo()
+    {
+        return $this->hasOne(RecruitmentInfo::class, 'user_id');
+    }
+
+    public function adeptLanguages()
+    {
+        return $this->hasMany(AdeptLanguage::class, 'user_id');
+    }
+
+    public function educationExperiences()
+    {
+        return $this->hasMany(EducationExperience::class, 'user_id');
+    }
+
+    public function skillCertificates()
+    {
+        return $this->hasMany(SkillCertificate::class, 'user_id');
+    }
+
+    public function workExperiences()
+    {
+        return $this->hasMany(WorkExperience::class, 'user_id');
+    }
 }
