@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('mobile', 20)->nullable()->unique();
             $table->unsignedTinyInteger('status')->default(0)->index()->comment('状态');
+            $table->unsignedTinyInteger('is_identify')->default(0)->index()->comment('是否已认证');
             //个人资料
             $table->string('nickname')->nullable()->comment('昵称');
             $table->string('real_name')->nullable()->comment('姓名');
