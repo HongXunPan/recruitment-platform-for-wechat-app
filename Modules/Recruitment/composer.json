@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/recruitment",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Recruitment\\Providers\\RecruitmentServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Recruitment\\": ""
+        }
+    }
+}
