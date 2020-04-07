@@ -18,7 +18,7 @@ class CreateTableUserRecruitmentInfo extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
 
-            $table->string('area_id')->nullable()->comment('所在城市');
+            $table->unsignedInteger('area_id')->nullable()->comment('所在城市');
             $table->date('birth_date')->nullable()->comment('生日');
             $table->string('height', 10)->nullable()->comment('身高');
             $table->unsignedTinyInteger('education_status')->nullable()->comment('教育状态 1在读 2已毕业');
