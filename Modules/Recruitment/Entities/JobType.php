@@ -3,6 +3,7 @@
 namespace Modules\Recruitment\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Support\Facades\DB;
 
 class JobType extends Model
@@ -11,9 +12,9 @@ class JobType extends Model
 
     protected $table = 'recruitment_job_types';
 
-    public function jobs1()
+    public function jobs()
     {
-        return Job::query()->whereRaw(DB::raw('FIND_IN_SET(?, job_type_ids)', $this->id))->get();
+        return $this->hasMany(Job::class, 'job_type_ids', 'id', HasOneOrMany::SPECIAL_ELSE_SEPARATE);
     }
 
 }

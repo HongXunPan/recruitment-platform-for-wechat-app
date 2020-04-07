@@ -10,11 +10,6 @@ class Area extends Model
 
     protected $table = 'recruitment_areas';
 
-    public function companies()
-    {
-        return $this->hasMany(Company::class, 'area_id');
-    }
-
     public function jobs()
     {
         return $this->hasMany(Job::class, 'area_id');

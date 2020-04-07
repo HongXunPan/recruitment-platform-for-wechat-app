@@ -3,6 +3,7 @@
 namespace Modules\Recruitment\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Support\Facades\DB;
 
 class Welfare extends Model
@@ -11,13 +12,13 @@ class Welfare extends Model
 
     protected $table = 'recruitment_welfare';
 
-    public function jobs1()
+    public function jobs()
     {
-        return Job::query()->whereRaw(DB::raw('FIND_IN_SET(?, welfare_ids)', $this->id))->get();
+        return $this->hasMany(Job::class, 'welfate_ids', 'id', HasOneOrMany::SPECIAL_ELSE_SEPARATE);
     }
 
-    public function companies1()
+    public function companies()
     {
-        return Company::query()->whereRaw(DB::raw('FIND_IN_SET(?, welfare_ids)', $this->id))->get();
+        return $this->hasMany(Company::class, 'welfare_ids', 'id', HasOneOrMany::SPECIAL_ELSE_SEPARATE);
     }
 }

@@ -3,6 +3,7 @@
 namespace Modules\Recruitment\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Support\Facades\DB;
 
 class Job extends Model
@@ -21,31 +22,19 @@ class Job extends Model
         return $this->belongsTo(Area::class, 'area_id');
     }
 
-    public function tags1()
+    public function tags()
     {
-        $tagIdArr = explode(',', $this->tag_ids);
-        return JobTag::query()
-            ->whereIn('id', $tagIdArr)
-            ->orderByRaw(DB::raw("FIELD(id, ?)", $this->tag_ids))
-            ->get();
+        return $this->hasMany(JobTag::class, 'id', 'tag_ids', HasOneOrMany::SPECIAL_SELF_SEPARATE);
     }
 
-    public function welfare1()
+    public function welfare()
     {
-        $welfareIdArr = explode(',', $this->welfare_ids);
-        return Welfare::query()
-            ->whereIn('id', $welfareIdArr)
-            ->orderByRaw(DB::raw("FIELD(id, ?)", $this->welfare_ids))
-            ->get();
+        return $this->hasMany(Welfare::class, 'id', 'welfare_ids', HasOneOrMany::SPECIAL_SELF_SEPARATE);
     }
 
-    public function type1()
+    public function type()
     {
-        $jobTypeIdArr = explode(',', $this->job_type_ids);
-        return JobType::query()
-            ->whereIn('id', $jobTypeIdArr)
-            ->orderByRaw(DB::raw("FIELD(id, ?)", $this->job_type_ids))
-            ->get();
+        return $this->hasMany(JobType::class, 'id', 'job_type_ids', HasOneOrMany::SPECIAL_SELF_SEPARATE);
     }
 
 

@@ -3,7 +3,7 @@
 namespace Modules\Recruitment\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 
 class Company extends Model
 {
@@ -21,14 +21,9 @@ class Company extends Model
         return $this->hasMany(Job::class, 'company_id');
     }
 
-    //get welfare list
-    public function welfare1()
+    public function welfare()
     {
-        $welfareIdArr = explode(',', $this->welfare_ids);
-        return Welfare::query()
-            ->whereIn('id', $welfareIdArr)
-            ->orderByRaw(DB::raw("FIELD(id, ?)", $this->welfare_ids))
-            ->get();
+        return $this->hasMany(Welfare::class, 'id', 'welfare_ids', HasOneOrMany::SPECIAL_SELF_SEPARATE);
     }
 
 }
