@@ -47,7 +47,15 @@
         },
         "classmap": [
             "database/seeds",
-            "database/factories"
+            "database/factories",
+            "overload/Eloquent/HasOneOrMany.php",
+            "overload/Eloquent/HasOneOrManyOld.php",
+            "overload/Eloquent/HasRelationships.php",
+            "overload/Eloquent/HasRelationshipsOld.php"
+        ],
+        "exclude-from-classmap": [
+            "vendor/laravel/framework/src/Illuminate/Database/Eloquent/Relations/HasOneOrMany.php",
+            "vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php"
         ]
     },
     "autoload-dev": {
