@@ -19,7 +19,7 @@ class JobEnum extends BaseEnum
     const WORK_TIME_AFTERNOON = 2;
     const WORK_TIME_NIGHT = 3;
 
-    public $workTimeMap = [
+    public static $workTimeMap = [
         self::WORK_TIME_NO_LIMIT => '不限',
         self::WORK_TIME_MORNING => '上午',
         self::WORK_TIME_AFTERNOON => '下午',
@@ -31,7 +31,7 @@ class JobEnum extends BaseEnum
     const SEX_MAN = 1;
     const SEX_WOMAN = 2;
 
-    public $sexRequireMap = [
+    public static $sexRequireMap = [
         self::SEX_NOT_LIMIT => '不限',
         self::SEX_MAN => '男',
         self::SEX_WOMAN => '女',
@@ -40,7 +40,7 @@ class JobEnum extends BaseEnum
     const STATUS_NORMAL = 0;
     const STATUS_DISABLE = 1;
 
-    public $statusMap = [
+    public static $statusMap = [
         self::STATUS_NORMAL => '正常',
         self::STATUS_DISABLE => '下线',
     ];
@@ -51,7 +51,7 @@ class JobEnum extends BaseEnum
     const WORK_CIRCLE_WEEKEND = 2;
     const WORK_CIRCLE_LONG_TIME = 3;
 
-    public $workCircleMap = [
+    public static $workCircleMap = [
         self::WORK_CIRCLE_NO_LIMIT => '不限',
         self::WORK_CIRCLE_SHORT_TIME => '短期兼职',
         self::WORK_CIRCLE_WEEKEND => '周末兼职',
