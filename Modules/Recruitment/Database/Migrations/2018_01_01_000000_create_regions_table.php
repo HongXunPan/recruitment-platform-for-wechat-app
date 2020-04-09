@@ -23,33 +23,37 @@ class CreateRegionsTable extends Migration
             $table->unsignedTinyInteger('is_hot')->default(0)->index();
         });
 
-        $region = new Region();
+        Artisan::call('db:seed', [
+            '--class' => \Modules\Recruitment\Database\Seeders\RecruitmentAreasTableSeeder::class
+        ]);
 
-        $provinces = $region->getRegionsWithCode();
-
-        foreach ($provinces as $province) {
-            $provinceId = DB::table($this->tableName)->insertGetId([
-                'name' => $province['title'],
-                'code' => $province['ad_code'],
-                'initial' => $this->getInitial($province['title']),
-                'type' => Region::PROVINCE,
-            ]);
-            foreach ($province['child'] as $city) {
-                $cityId = DB::table($this->tableName)->insertGetId([
-                    'name' => $city['title'],
-                    'parent_id' => $provinceId,
-                    'code' => $city['ad_code'],
-                    'initial' => $this->getInitial($city['title']),
-                    'type' => Region::CITY,
-                ]);
-                $areas = array_map(function ($area) use ($cityId) {
-                    return ['name' => $area['title'], 'code' => $area['ad_code'],
-                        'initial' => $this->getInitial($area['title']),
-                        'parent_id' => $cityId, 'type' => Region::AREA];
-                }, $city['child']);
-                DB::table($this->tableName)->insert($areas);
-            }
-        }
+//        $region = new Region();
+//
+//        $provinces = $region->getRegionsWithCode();
+//
+//        foreach ($provinces as $province) {
+//            $provinceId = DB::table($this->tableName)->insertGetId([
+//                'name' => $province['title'],
+//                'code' => $province['ad_code'],
+//                'initial' => $this->getInitial($province['title']),
+//                'type' => Region::PROVINCE,
+//            ]);
+//            foreach ($province['child'] as $city) {
+//                $cityId = DB::table($this->tableName)->insertGetId([
+//                    'name' => $city['title'],
+//                    'parent_id' => $provinceId,
+//                    'code' => $city['ad_code'],
+//                    'initial' => $this->getInitial($city['title']),
+//                    'type' => Region::CITY,
+//                ]);
+//                $areas = array_map(function ($area) use ($cityId) {
+//                    return ['name' => $area['title'], 'code' => $area['ad_code'],
+//                        'initial' => $this->getInitial($area['title']),
+//                        'parent_id' => $cityId, 'type' => Region::AREA];
+//                }, $city['child']);
+//                DB::table($this->tableName)->insert($areas);
+//            }
+//        }
     }
 
     private function getInitial($name)

@@ -27,19 +27,23 @@ class CreateTableRecruitmentJobTypes extends Migration
             $table->timestamps();
         });
 
-        foreach ($this->data as $title => $typeData) {
-            $titleId = DB::table($this->tableName)->insertGetId([
-                'name' => $title,
-                'level' => 1,
-            ]);
-            foreach ($typeData as $type) {
-                DB::table($this->tableName)->insertGetId([
-                    'name' => $type,
-                    'parent_id' => $titleId,
-                    'level' => 2,
-                ]);
-            }
-        }
+        Artisan::call('db:seed', [
+            '--class' => \Modules\Recruitment\Database\Seeders\RecruitmentJobTypesTableSeeder::class
+        ]);
+
+//        foreach ($this->data as $title => $typeData) {
+//            $titleId = DB::table($this->tableName)->insertGetId([
+//                'name' => $title,
+//                'level' => 1,
+//            ]);
+//            foreach ($typeData as $type) {
+//                DB::table($this->tableName)->insertGetId([
+//                    'name' => $type,
+//                    'parent_id' => $titleId,
+//                    'level' => 2,
+//                ]);
+//            }
+//        }
     }
 
     protected $data = [
