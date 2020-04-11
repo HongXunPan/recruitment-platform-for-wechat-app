@@ -10,4 +10,10 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function listData($list = [], $page = 1, $count = 0)
+    {
+        return ['list' => $list, 'page' => $page, 'count' => $count];
+    }
+
 }
