@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -36,6 +37,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception)
     {
+        if ($exception instanceof ApiException && !in_array($exception->getCode(), ApiException::$doReportTypes)) {
+            //api 异常,指定的类型才记录的日志
+            return;
+        }
         parent::report($exception);
     }
 
@@ -50,6 +55,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        //框架验证器抛出
+        if ($exception instanceof ValidationException) {
+            //每次只抛出第一个错误
+            $param = key($exception->errors());
+            $error = current(current($exception->errors()));
+            throw new ApiException(ApiException::TYPE_PARAM_REQUIRE, $error, ['param' => $param]);
+        }
+
         return parent::render($request, $exception);
     }
 }
