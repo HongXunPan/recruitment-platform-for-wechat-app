@@ -26,13 +26,14 @@ class ApiResponse
         $content = json_decode($response->getContent(), true) ?? $oriData;
         $content = is_array($oriData) ? $oriData : $content;
 
-        if ($content['code'] !== 0) {
-            //异常时直接返回
-            return $response;
-        }
         //返回结构默认值
         $return['code'] = $content['code'] ?? 0;
         $return['msg'] = $content['msg'] ?? 'success';
+
+        if ($return['code'] !== 0) {
+            //异常时直接返回
+            return $response;
+        }
 
         $return['data'] = $content['data'] ?? [];
         if (!isset($content['code']) && !isset($content['msg'])) {
