@@ -60,6 +60,9 @@
         "exclude-from-classmap": [
             "vendor/laravel/framework/src/Illuminate/Database/Eloquent/Relations/HasOneOrMany.php",
             "vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php"
+        ],
+        "files": [
+            "bootstrap/helpers.php"
         ]
     },
     "autoload-dev": {
