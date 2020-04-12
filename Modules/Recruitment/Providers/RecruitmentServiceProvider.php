@@ -4,6 +4,10 @@ namespace Modules\Recruitment\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Recruitment\Repositories\JobRepository;
+use Modules\Recruitment\Repositories\JobRepositoryInterface;
+use Modules\Recruitment\Repositories\JobService;
+use Modules\Recruitment\Repositories\JobServiceInterface;
 
 class RecruitmentServiceProvider extends ServiceProvider
 {
@@ -39,6 +43,8 @@ class RecruitmentServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+
+        $this->app->bind(JobServiceInterface::class, JobService::class);
     }
 
     /**
