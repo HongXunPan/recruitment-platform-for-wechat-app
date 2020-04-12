@@ -5,7 +5,7 @@
 use Faker\Generator as Faker;
 
 $factory->define(\Modules\Recruitment\Entities\Job::class, function (Faker $faker) {
-    $jobTypeIdArr = \Modules\Recruitment\Entities\JobType::query()->where('level', '=', 2)->get('id');
+    $jobTypeIdArr = \Modules\Recruitment\Entities\JobType::query()->where('level', '=', 2)->pluck('id');
     return [
         //
 //        'company_id' => factory(\Modules\Recruitment\Entities\Company::class),
