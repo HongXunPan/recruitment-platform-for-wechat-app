@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Recruitment 模块 映射到 \Modules\Recruitment\Http\Controllers\
+Route::prefix('recruitment')->namespace('\Modules\Recruitment\Http\Controllers')
+    ->middleware(['apiResponse'])
+    ->group(function () {
+        Route::get('jobList', 'JobController@list');
+
+    });
