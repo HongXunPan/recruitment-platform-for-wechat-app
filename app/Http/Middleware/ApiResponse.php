@@ -21,6 +21,17 @@ class ApiResponse
             return $response;
         }
 
+        //非正常返回
+        if ($response->getStatusCode() !== 200) {
+            $return = [
+                'code' => 9999,
+                'msg' => '服务器错误',
+                'data' => ['http_code' => $response->getStatusCode()],
+            ];
+            $response = $response instanceof JsonResponse ? $response->setData($return) : $response->setContent($return);
+            return $response;
+        }
+
         // 执行动作
         $oriData = $response->getOriginalContent();
         $content = json_decode($response->getContent(), true) ?? $oriData;
