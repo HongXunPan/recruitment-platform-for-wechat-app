@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception)
     {
-        if ($exception instanceof ApiException && !in_array($exception->getCode(), ApiException::$doReportTypes)) {
+        if ($exception instanceof ApiException && !$exception->needReport) {
             //api 异常,指定的类型才记录的日志
             return;
         }
@@ -60,7 +60,7 @@ class Handler extends ExceptionHandler
             //每次只抛出第一个错误
             $param = key($exception->errors());
             $error = current(current($exception->errors()));
-            throw new ApiException(ApiException::TYPE_PARAM_REQUIRE, $error, ['param' => $param]);
+            throw new ApiException(ApiException::TYPE_PARAM_REQUIRE, $error, false, ['param' => $param]);
         }
 
         return parent::render($request, $exception);
