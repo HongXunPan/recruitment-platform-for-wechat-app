@@ -8,6 +8,7 @@
 
 namespace Modules\Recruitment\Repositories;
 
+use App\Exceptions\ApiException;
 use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\Recruitment\Entities\Job;
@@ -72,10 +73,14 @@ class JobService extends BaseRepository implements JobServiceInterface
      * 格式化工作字段
      * @param Job $job
      * @param string $field
-     * @return mixed
+     * @return array|mixed|string
+     * @throws ApiException
      */
     public function formatJobField(Job $job, $field = '')
     {
+        if (empty($field)) {
+            throw new ApiException(ApiException::TYPE_SERVER_ERROR, 'can not get empty property from Job');
+        }
         $value = '';
         switch ($field) {
             case 'area_name':
@@ -95,9 +100,7 @@ class JobService extends BaseRepository implements JobServiceInterface
                 $value = empty($job->tags) ? '' : $job->tags[0]->name;
                 break;
             default:
-                if (!empty($field)) {
-                    $value = $job->$field ?? '';
-                }
+                $value = $job->$field ?? '';
                 break;
         }
         return $value;
