@@ -19,3 +19,10 @@ if (!function_exists('money_format_to_db')) {
         return number_format($number * 100 . '', $decimals, $dec_point, $thousands_sep);
     }
 }
+
+if (!function_exists('indexed_array_to_json')) {
+    function indexed_array_to_json(&$value, $key, $data = ['key', 'value'])
+    {
+        $value = [$data[0] => $key, $data[1] => $value];
+    }
+}
