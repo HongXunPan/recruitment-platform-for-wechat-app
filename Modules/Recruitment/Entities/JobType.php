@@ -43,4 +43,13 @@ class JobType extends Model
         return $this->hasMany(Job::class, 'job_type_ids', 'id', HasOneOrMany::SPECIAL_ELSE_SEPARATE);
     }
 
+    public function parent()
+    {
+        return $this->hasOne(self::class, 'id', 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id', 'id')->orderBy('sort', 'desc');
+    }
 }
