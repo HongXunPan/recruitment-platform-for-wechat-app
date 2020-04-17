@@ -23,5 +23,6 @@ Route::prefix('recruitment')->namespace('\Modules\Recruitment\Http\Controllers')
     ->middleware(['apiResponse'])
     ->group(function () {
         Route::get('jobList', 'JobController@list');
+        Route::get('listFilterCondition', 'JobController@listFilterCondition');
 
     });

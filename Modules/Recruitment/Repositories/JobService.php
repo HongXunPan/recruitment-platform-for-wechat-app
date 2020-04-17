@@ -10,8 +10,12 @@ namespace Modules\Recruitment\Repositories;
 
 use App\Exceptions\ApiException;
 use App\Repositories\BaseRepository;
+use Cblink\Region\Region;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+use Modules\Recruitment\Entities\Area;
 use Modules\Recruitment\Entities\Job;
+use Modules\Recruitment\Entities\JobType;
 
 class JobService extends BaseRepository implements JobServiceInterface
 {
@@ -52,6 +56,7 @@ class JobService extends BaseRepository implements JobServiceInterface
      * @param Collection $jobList
      * @param array $fields
      * @return array
+     * @throws ApiException
      */
     public function formatJobList($jobList, $fields = []): array
     {
@@ -105,4 +110,32 @@ class JobService extends BaseRepository implements JobServiceInterface
         }
         return $value;
     }
+
+    public function getJobTypeTree(): array
+    {
+        $typeList = JobType::whereLevel(1)->with('children')->get();
+        $typeTree = [];
+        if (!empty($typeList)) {
+            /** @var JobType $type */
+            foreach ($typeList as $type) {
+                $children = [];
+                /** @var JobType $child */
+                foreach ($type->children as $child) {
+                    $children[] = [
+                        'id' => $child['id'],
+                        'name' => $child['name'],
+                    ];
+                }
+                $typeTree[] = [
+                    'id' => $type['id'],
+                    'name' => $type['name'],
+                    'icon' => $type['icon'] ?? '',
+                    'children' => $children
+                ];
+            }
+        }
+        return $typeTree;
+    }
+
+
 }
