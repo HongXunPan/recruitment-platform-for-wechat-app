@@ -4,6 +4,7 @@ namespace Modules\Recruitment\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\Recruitment\Entities\JobType;
 use Modules\Recruitment\Enums\JobEnum;
 use Modules\Recruitment\Repositories\AreaService;
@@ -21,11 +22,26 @@ class JobController extends Controller
 
     public function list(Request $request)
     {
+        $this->validate($request, [
+            'page' => 'int',
+            'pagesize' => 'int',
+            'area_ids' => 'array',
+            'sort' => 'sometimes|int|in:'.implode(',', array_keys(JobEnum::$sortMap)),
+        ]);
         $page = (int)$request->page ?: 1;
         $pagesize = (int)$request->pagesize ?: 15;
         //$area_id
-        $jobList = $this->jobService->getJobList([], [], $count, $page, $pagesize);
+        $where = [];
+        if (count($request->area_ids) > 0) {
+            /** @var AreaServiceInterface $areaService */
+            $areaService = app(AreaServiceInterface::class);
+            $where['area_ids'] = $areaService->getChildrenAreaId($request->area_ids);
+        }
+        //sort
+        $sort = $request->sort ?: 1;
 
+        $jobList = $this->jobService->getJobList([], $where, $count, $page, $pagesize, $sort);
+//        dd(DB::getQueryLog());
         $list = $this->jobService->formatJobList($jobList, ['id', 'title', 'money', 'first_tag_name', 'welfare_name_list', 'area_name', 'created_at']);
         foreach ($list as &$data) {
             if (count($data['welfare_name_list']) > 3) {
@@ -46,22 +62,16 @@ class JobController extends Controller
             'current_area_id' => 'int',
         ]);
         $currentAreaId = $request->input('current_area_id', 0);
-
         //区域
         /** @var AreaServiceInterface $areaService */
         $areaService = app(AreaServiceInterface::class);
-        $area = $areaService->getChildrenArea($currentAreaId, 1);
+        $area = $areaService->getChildrenAreaTree($currentAreaId, 1);
 
         //排序
-        $sort = [
-            1 => '综合排序',
-            2 => '最新发布',
-            3 => '离我最近',
-        ];
-
-
+        $sort = JobEnum::$sortMap;
         array_walk($sort, 'indexed_array_to_json', ['sort', 'name']);
         $sort = array_values($sort);
+
         //筛选
         $sexRequireMap = JobEnum::$sexRequireMap;
         array_walk($sexRequireMap, 'indexed_array_to_json', ['sex_require', 'name']);

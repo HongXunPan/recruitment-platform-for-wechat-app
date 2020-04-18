@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Recruitment\Entities\Area;
 use Modules\Recruitment\Entities\Job;
 use Modules\Recruitment\Entities\JobType;
+use Modules\Recruitment\Enums\JobEnum;
 
 class JobService extends BaseRepository implements JobServiceInterface
 {
@@ -25,9 +26,10 @@ class JobService extends BaseRepository implements JobServiceInterface
      * @param int $count
      * @param int $page
      * @param int $pageSize
-     * @return Collection|static[]
+     * @param int $sort
+     * @return Collection|Job[]
      */
-    public function getJobList($fields = [], $where = [], &$count = 0, $page = 1, $pageSize = 15)
+    public function getJobList(array $fields = [],array $where = [], &$count = 0, int $page = 1, int $pageSize = 15, int $sort = JobEnum::SORT_DEFAULT)
     {
         /** @var Job $query */
         $query = Job::query();
@@ -38,17 +40,30 @@ class JobService extends BaseRepository implements JobServiceInterface
             $query->select($fields);
         }
         if (!empty($where)) {
-            $query->where($where);
+            $query->where(function ($q) use ($where) {
+                /** @var Job $q*/
+                if (isset($where['area_ids'])) {
+                    $q->whereIn('area_id', $where['area_ids']);
+                }
+            });
         }
 
-        $query->orderBy('created_at', 'desc');
+        switch ($sort) {
+            case JobEnum::SORT_DEFAULT:
+                $query->orderBy('sort_score', 'desc');
+                break;
+            case JobEnum::SORT_NEWEST:
+                $query->orderBy('created_at', 'desc');
+                break;
+            default:
+                $query->orderBy('id', 'desc');
+                break;
+        }
         $query->orderBy('id', 'desc');
         $count = $query->count();
 
         $query->forPage($page, $pageSize);
-        $jobList = $query->get();
-
-        return $jobList;
+        return $query->get();
     }
 
     /**

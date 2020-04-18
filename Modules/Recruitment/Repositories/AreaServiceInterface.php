@@ -14,6 +14,8 @@ use App\Repositories\BaseRepositoryInterface;
 
 interface AreaServiceInterface extends BaseRepositoryInterface
 {
-    public function getChildrenArea($parentId, $level = 1): array;
+    public function getChildrenAreaTree($parentId, $level = 1): array;
+
+    public function getChildrenAreaId($areaId, $includeSelf = true): array;
 
 }

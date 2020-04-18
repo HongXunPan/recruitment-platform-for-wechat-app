@@ -58,4 +58,13 @@ class JobEnum extends BaseEnum
         self::WORK_CIRCLE_LONG_TIME => '长期兼职',
     ];
 
+    const SORT_DEFAULT = 1;
+    const SORT_NEWEST = 2;
+    const SORT_DISTANCE = 3;
+
+    public static $sortMap = [
+        self::SORT_DEFAULT => '综合排序',
+        self::SORT_NEWEST => '最新发布',
+        self::SORT_DISTANCE => '离我最近',
+    ];
 }

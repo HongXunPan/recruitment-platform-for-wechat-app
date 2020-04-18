@@ -9,10 +9,11 @@ namespace Modules\Recruitment\Repositories;
 
 use App\Repositories\BaseRepositoryInterface;
 use Modules\Recruitment\Entities\Job;
+use Modules\Recruitment\Enums\JobEnum;
 
 interface JobServiceInterface extends BaseRepositoryInterface
 {
-    public function getJobList($fields = [], $where = [], &$count = 0, $page = 1, $pageSize = 15);
+    public function getJobList(array $fields = [],array $where = [], &$count = 0, int $page = 1, int $pageSize = 15, int $sort = JobEnum::SORT_DEFAULT);
 
     public function formatJobList($jobList, $fields = []): array ;
 
