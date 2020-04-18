@@ -40,8 +40,10 @@ class JobController extends Controller
         //sort
         $sort = $request->sort ?: 1;
 
+        //todo 筛选
+        
+
         $jobList = $this->jobService->getJobList([], $where, $count, $page, $pagesize, $sort);
-//        dd(DB::getQueryLog());
         $list = $this->jobService->formatJobList($jobList, ['id', 'title', 'money', 'first_tag_name', 'welfare_name_list', 'area_name', 'created_at']);
         foreach ($list as &$data) {
             if (count($data['welfare_name_list']) > 3) {
