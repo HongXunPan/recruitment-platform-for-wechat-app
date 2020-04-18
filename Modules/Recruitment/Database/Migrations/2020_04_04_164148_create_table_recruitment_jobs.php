@@ -37,6 +37,7 @@ class CreateTableRecruitmentJobs extends Migration
             $table->json('location')->nullable()->comment('地址信息');
             $table->unsignedInteger('status')->default(JobEnum::STATUS_NORMAL)->comment('兼职状态 0正常 1下架');
             $table->unsignedBigInteger('view_count')->default(0)->comment('浏览次数');
+            $table->unsignedBigInteger('sort_score')->default(0)->comment('综合排序分数');
             $table->timestamps();
         });
     }

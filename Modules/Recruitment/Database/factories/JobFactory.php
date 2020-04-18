@@ -24,6 +24,7 @@ $factory->define(\Modules\Recruitment\Entities\Job::class, function (Faker $fake
         'work_time' => $faker->randomElement(array_keys(\Modules\Recruitment\Enums\JobEnum::$workTimeMap)),
         'other_require' => getOtherRequire($faker),
         'view_count' => $faker->numberBetween(),
+        'sort_score' => $faker->numberBetween(),
 
 //    * @property mixed|null $location 地址信息
 //    * @property int $status 兼职状态 0正常 1下架
