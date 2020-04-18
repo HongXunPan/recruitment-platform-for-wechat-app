@@ -9,7 +9,7 @@
 return [
     'custom' => [
         '*.required' => ':attribute不可为空',
-
+        '*.in' => ':attribute不合法',
         'email' => [
 //            'required' => 'We need to know your e-mail address!',
         ],
