@@ -59,6 +59,8 @@ use Illuminate\Support\Facades\DB;
  * @method static \Illuminate\Database\Eloquent\Builder|\Modules\Recruitment\Entities\Job whereWorkCircles($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Modules\Recruitment\Entities\Job whereWorkTime($value)
  * @mixin \Eloquent
+ * @property int $sort_score 综合排序分数
+ * @method static \Illuminate\Database\Eloquent\Builder|\Modules\Recruitment\Entities\Job whereSortScore($value)
  */
 class Job extends Model
 {
