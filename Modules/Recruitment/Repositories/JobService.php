@@ -48,6 +48,9 @@ class JobService extends BaseRepository implements JobServiceInterface
                 if (isset($where['sex_require'])) {
                     $q->whereSexRequire($where['sex_require']);
                 }
+                if (isset($where['work_time'])) {
+                    $q->whereIn('work_time', $where['work_time']);
+                }
             });
         }
 

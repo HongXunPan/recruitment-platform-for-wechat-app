@@ -33,8 +33,10 @@ class JobController extends Controller
         ]);
         $page = (int)$request->page ?: 1;
         $pagesize = (int)$request->pagesize ?: 15;
-        //$area_id
+
+        //todo 筛选
         $where = [];
+        //$area_id
         if (count($request->area_ids) > 0) {
             /** @var AreaServiceInterface $areaService */
             $areaService = app(AreaServiceInterface::class);
@@ -44,10 +46,14 @@ class JobController extends Controller
             //        $sex_require
             $where['sex_require'] = $request->sex_require;
         }
+        if (isset($request->work_time)) {
+            //单选不限的时候，真的不限制筛选
+            if (!in_array(JobEnum::WORK_TIME_NO_LIMIT, $request->work_time) || count($request->work_time) !== 1) {
+                $where['work_time'] = $request->work_time;
+            }
+        }
         //sort
         $sort = $request->sort ?: 1;
-
-        //todo 筛选
 
         $jobList = $this->jobService->getJobList([], $where, $count, $page, $pagesize, $sort);
         $list = $this->jobService->formatJobList($jobList, ['id', 'title', 'money', 'first_tag_name', 'welfare_name_list', 'area_name', 'created_at']);
