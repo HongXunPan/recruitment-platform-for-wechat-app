@@ -47,8 +47,12 @@ abstract class HasOneOrMany extends HasOneOrManyOld
                 case self::SPECIAL_SELF_SEPARATE:
                     $parentKeyArr = explode(',', $parentKey);
 
-                    $this->query->whereIn($this->foreignKey, $parentKeyArr);
-                    $this->query->orderByRaw(\DB::raw("FIELD(id,$parentKey)"));
+                    if (!empty($parentKey)) {
+                        $this->query->whereIn($this->foreignKey, $parentKeyArr);
+                        $this->query->orderByRaw(\DB::raw("FIELD(id,$parentKey)"));
+                    } else {
+                        $this->query->where($this->foreignKey, '=', $this->getParentKey());
+                    }
                     break;
                 case self::SPECIAL_ELSE_SEPARATE:
                     $this->getParentKey();
