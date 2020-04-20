@@ -26,7 +26,10 @@ class JobController extends Controller
             'page' => 'int',
             'pagesize' => 'int',
             'area_ids' => 'array',
-            'sort' => 'sometimes|int|in:'.implode(',', array_keys(JobEnum::$sortMap)),
+            'sort' => 'int|in:' . implode(',', array_keys(JobEnum::$sortMap)),
+            'sex_require' => 'int|in:' . implode(',', array_keys(JobEnum::$sexRequireMap)),
+            'work_time' => 'array|in:' . implode(',',array_keys(JobEnum::$workTimeMap)),
+
         ]);
         $page = (int)$request->page ?: 1;
         $pagesize = (int)$request->pagesize ?: 15;
@@ -37,11 +40,14 @@ class JobController extends Controller
             $areaService = app(AreaServiceInterface::class);
             $where['area_ids'] = $areaService->getChildrenAreaId($request->area_ids);
         }
+        if (isset($request->sex_require)) {
+            //        $sex_require
+            $where['sex_require'] = $request->sex_require;
+        }
         //sort
         $sort = $request->sort ?: 1;
 
         //todo 筛选
-        
 
         $jobList = $this->jobService->getJobList([], $where, $count, $page, $pagesize, $sort);
         $list = $this->jobService->formatJobList($jobList, ['id', 'title', 'money', 'first_tag_name', 'welfare_name_list', 'area_name', 'created_at']);
