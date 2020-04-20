@@ -28,8 +28,8 @@ class JobController extends Controller
             'area_ids' => 'array',
             'sort' => 'int|in:' . implode(',', array_keys(JobEnum::$sortMap)),
             'sex_require' => 'int|in:' . implode(',', array_keys(JobEnum::$sexRequireMap)),
-            'work_time' => 'array|in:' . implode(',',array_keys(JobEnum::$workTimeMap)),
-
+            'work_time' => 'array|in:' . implode(',', array_keys(JobEnum::$workTimeMap)),
+            'work_circle' => 'int|in:' . implode(',', array_keys(JobEnum::$workCircleMap)),
         ]);
         $page = (int)$request->page ?: 1;
         $pagesize = (int)$request->pagesize ?: 15;
@@ -52,7 +52,11 @@ class JobController extends Controller
                 $where['work_time'] = $request->work_time;
             }
         }
-        //sort
+        if (isset($request->work_circle) && $request->work_time !== JobEnum::WORK_CIRCLE_NO_LIMIT) {
+            $where['work_circle'] = $request->work_circle;
+        }
+
+        //排序 sort
         $sort = $request->sort ?: 1;
 
         $jobList = $this->jobService->getJobList([], $where, $count, $page, $pagesize, $sort);
