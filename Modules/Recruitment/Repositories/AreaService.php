@@ -28,7 +28,7 @@ class AreaService extends BaseRepository implements AreaServiceInterface
 
         /** @var Area $child */
         foreach ($area['children'] as $child) {
-            $subChildren = $this->getChildren($child, $level, $total . '.children');
+            $subChildren = $this->getChildrenTree($child, $level, $total . '.children');
 
             $areaChildren = [];
             $areaChildren['id'] = $child->id;
