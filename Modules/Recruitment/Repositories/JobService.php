@@ -54,6 +54,17 @@ class JobService extends BaseRepository implements JobServiceInterface
                 if (isset($where['work_circle'])) {
                     $q->whereWorkCircles($where['work_circle']);
                 }
+                if (isset($where['job_type_ids'])) {
+                    $sql = '';
+                    foreach ($where['job_type_ids'] as $type_id) {
+                        if (empty($sql)) {
+                            $sql .= DB::raw('FIND_IN_SET(?,job_type_ids)');
+                        } else {
+                            $sql .= DB::raw(' or FIND_IN_SET(?,job_type_ids)');
+                        }
+                    }
+                    $q->whereRaw('(' . $sql . ')', $where['job_type_ids']);
+                }
             });
         }
 

@@ -30,6 +30,7 @@ class JobController extends Controller
             'sex_require' => 'int|in:' . implode(',', array_keys(JobEnum::$sexRequireMap)),
             'work_time' => 'array|in:' . implode(',', array_keys(JobEnum::$workTimeMap)),
             'work_circle' => 'int|in:' . implode(',', array_keys(JobEnum::$workCircleMap)),
+            'job_type_ids' => 'array|in:' . implode(',', JobType::whereLevel(2)->get()->pluck('id')->toArray()),
         ]);
         $page = (int)$request->page ?: 1;
         $pagesize = (int)$request->pagesize ?: 15;
@@ -43,7 +44,6 @@ class JobController extends Controller
             $where['area_ids'] = $areaService->getChildrenAreaId($request->area_ids);
         }
         if (isset($request->sex_require)) {
-            //        $sex_require
             $where['sex_require'] = $request->sex_require;
         }
         if (isset($request->work_time)) {
@@ -54,6 +54,9 @@ class JobController extends Controller
         }
         if (isset($request->work_circle) && $request->work_time !== JobEnum::WORK_CIRCLE_NO_LIMIT) {
             $where['work_circle'] = $request->work_circle;
+        }
+        if (isset($request->job_type_ids)) {
+            $where['job_type_ids'] = $request->job_type_ids;
         }
 
         //排序 sort
