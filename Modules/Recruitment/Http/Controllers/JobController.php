@@ -31,11 +31,12 @@ class JobController extends Controller
             'work_time' => 'array|in:' . implode(',', array_keys(JobEnum::$workTimeMap)),
             'work_circle' => 'int|in:' . implode(',', array_keys(JobEnum::$workCircleMap)),
             'job_type_ids' => 'array|in:' . implode(',', JobType::whereLevel(2)->get()->pluck('id')->toArray()),
+            'keywords' => 'string',
         ]);
         $page = (int)$request->page ?: 1;
         $pagesize = (int)$request->pagesize ?: 15;
 
-        //todo 筛选
+        //筛选 filter
         $where = [];
         //$area_id
         if (count($request->area_ids) > 0) {
@@ -58,6 +59,11 @@ class JobController extends Controller
         if (isset($request->job_type_ids)) {
             $where['job_type_ids'] = $request->job_type_ids;
         }
+        //search
+        if (isset($request->keywords)) {
+            $where['keywords'] = $request->keywords;
+        }
+
 
         //排序 sort
         $sort = $request->sort ?: 1;

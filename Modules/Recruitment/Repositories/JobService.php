@@ -59,6 +59,10 @@ class JobService extends BaseRepository implements JobServiceInterface
                     $sql .= str_repeat(DB::raw(' or FIND_IN_SET(?,job_type_ids)'), count($where['job_type_ids']) -1);
                     $q->whereRaw('(' . $sql . ')', $where['job_type_ids']);
                 }
+                if (isset($where['keywords'])) {
+                    //后续做拆分搜索 eg:Elasticsearch分词
+                    $q->whereRaw(DB::raw('concat(title,content) like \'%'.$where['keywords'].'%\''));
+                }
             });
         }
 
