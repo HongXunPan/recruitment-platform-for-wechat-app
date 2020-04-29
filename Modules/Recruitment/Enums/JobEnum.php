@@ -67,4 +67,6 @@ class JobEnum extends BaseEnum
         self::SORT_NEWEST => '最新发布',
         self::SORT_DISTANCE => '离我最近',
     ];
+
+    const JOB_DETAIL_TIPS = 'Tips:凡收取费用的或工作内容不符的兼职，请你提高警惕并第一时间向我们举报。';
 }
