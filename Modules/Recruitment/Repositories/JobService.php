@@ -96,15 +96,27 @@ class JobService extends BaseRepository implements JobServiceInterface
         $data = [];
         /** @var Job $job */
         foreach ($jobList as $job) {
-            $formatJob = [];
-            foreach ($fields as $field) {       //遍历字段赋值
-                if (!empty($field)) {
-                    $formatJob[$field] = $this->formatJobField($job, $field);
-                }
-            }
+            $formatJob = $this->formatJob($job, $fields);
             $data[] = $formatJob;
         }
         return $data;
+    }
+
+    /**
+     * @param Job $job
+     * @param array $fields
+     * @return array
+     * @throws ApiException
+     */
+    public function formatJob(Job $job, $fields = []): array
+    {
+        $newJob = [];
+        foreach ($fields as $field) {       //遍历字段赋值
+            if (!empty($field)) {
+                $newJob[$field] = $this->formatJobField($job, $field);
+            }
+        }
+        return $newJob;
     }
 
     /**

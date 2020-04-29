@@ -17,6 +17,8 @@ interface JobServiceInterface extends BaseRepositoryInterface
 
     public function formatJobList($jobList, $fields = []): array ;
 
+    public function formatJob(Job $job, $fields = []): array;
+
     public function formatJobField(Job $job, $field = '');
 
     public function getJobTypeTree(): array ;

@@ -22,7 +22,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('recruitment')->namespace('\Modules\Recruitment\Http\Controllers')
     ->middleware(['apiResponse'])
     ->group(function () {
-        Route::get('jobList', 'JobController@list');
+        Route::any('jobList', 'JobController@list');
         Route::get('listFilterCondition', 'JobController@listFilterCondition');
+        Route::get('jobDetail/{id}', 'JobController@jobDetail')->where('id', '\d+');
 
     });
