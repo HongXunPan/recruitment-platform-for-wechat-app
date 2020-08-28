@@ -121,63 +121,12 @@ class JobController extends Controller
 
     public function jobDetail($id)
     {
-        $job = Job::findOrFail($id);
-        $data = $this->jobService->formatJob($job, ['title', 'money', 'area_name', 'view_count', 'created_at', 'content'
-        , 'tags', 'welfare', 'type', 'work_circles', 'sex_require', 'work_time', 'other_require', ]);
 
-        if (!empty($data['tags'])) {
-            $tags = array_slice($data['tags']->toArray(), 0, 5);
-            $newTags = [];
-            foreach ($tags as $tag) {
-                $newTags[] = [
-                    'id' => $tag['id'],
-                    'name' => $tag['name'],
-                ];
-            }
-            $data['tags'] = $newTags;
-        }
-        $data['created_at'] = $data['created_at']->format('Y-m-d');
-        $data['tips'] = JobEnum::JOB_DETAIL_TIPS;
+        $data = $this->jobService->getJobDetail($id);
 
-        if (!empty($data['type'])) {
-            $types = array_slice($data['type']->toArray(), 0, 3);
-            $newTypes = [];
-            foreach ($types as $type) {
-                $newTypes[] = [
-                    'id' => $type['id'],
-                    'type' => $type['name'],
-                ];
-            }
-            $data['type'] = $newTypes;
-        }
-
-        $data['sex_require'] = JobEnum::$sexRequireMap[$data['sex_require']];
-
-        if (!empty($data['welfare'])) {
-            $welfares = array_slice($data['welfare']->toArray(), 0, 5);
-            $newWelfares = [];
-            foreach ($welfares as $welfare) {
-                $newWelfares[] = [
-                    'id' => $welfare['id'],
-                    'welfare' => $welfare['welfare'],
-                    'image' => '',
-                ];
-            }
-            $data['welfare'] = $newWelfares;
-        }
-
-        $data['work_circles'] = JobEnum::$workCircleMap[$data['work_circles']];
-        $data['work_time'] = JobEnum::$workTimeMap[$data['work_time']];
-
-        $otherRequires = explode(',', $data['other_require']);
-        $newOtherRequires = [];
-        foreach ($otherRequires as $otherRequire) {
-            //$otherRequire 包含: 转换成 key => value
-            list($key, $value) = explode(':', $otherRequire);
-            $newOtherRequires[$key] = $value;
-        }
-
-        $data['other_require'] = $newOtherRequires;
+        $data['tags'] = array_slice($data['tags'], 0, 5);
+        $data['type'] = array_slice($data['type'], 0, 3);
+        $data['welfare'] = array_slice($data['welfare'], 0, 5);
 
         return $data;
     }

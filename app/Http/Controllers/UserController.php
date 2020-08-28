@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Modules\Recruitment\Entities\Area;
 use Modules\Recruitment\Entities\Company;
+use Modules\Recruitment\Entities\Job;
 use Modules\Recruitment\Entities\Welfare;
 
 class UserController extends Controller
@@ -89,16 +90,10 @@ class UserController extends Controller
 
     public function test(Request $request)
     {
-        $this->validate($request, [
-            'email' => 'required|max:255',
-            'xx' => 'required',
-        ]);
-
-        return ['list' => [], 'page' => 1, 'count' => 0];
-        $aa = Welfare::query()->find(1);
+        $aa = Job::query()->find(1);
 
         DB::connection()->enableQueryLog();//开启执行日志
-        $bb = $aa->companies;
+        $bb = $aa->welfare;
 //        dd(DB::getQueryLog());   //获取查询语句、参数和执行时间
         dd($bb);
     }

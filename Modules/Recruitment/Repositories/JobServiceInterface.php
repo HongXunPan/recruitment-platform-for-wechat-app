@@ -23,4 +23,6 @@ interface JobServiceInterface extends BaseRepositoryInterface
 
     public function getJobTypeTree(): array ;
 
+    public function getJobDetail($id);
+
 }
